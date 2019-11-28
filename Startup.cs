@@ -27,15 +27,9 @@ namespace bsbackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-                var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-                services.AddDbContext<ApiDbContext>(options =>
-                options.UseNpgsql(
-                connectionString
-                )
-            );
-
-
-
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
             services.AddControllers();
         }
 

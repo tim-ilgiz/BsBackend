@@ -1,0 +1,37 @@
+version: '3.4'
+ 
+networks:
+  bsbackend-dev:
+    driver: bridge 
+ 
+services:
+  bsbackend:
+    image: bsbackend:latest
+    depends_on:
+      - "bsserver"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"     
+    environment:
+      DB_CONNECTION_STRING: "host=bsserver;port=5432;database=bsdb;username=bsuser;password=bspass"
+    networks:
+      - bsbackend-dev  
+  
+  bsserver:
+    image: postgres:latest
+    ports:
+      - "5440:5432"
+    restart: always
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+      - ./dbscripts/seed.sql :/docker-entrypoint-initdb.d/seed.sql
+    environment:
+      POSTGRES_USER: "bsuser"
+      POSTGRES_PASSWORD: "bspass"
+      POSTGRES_DB: "bsdb"
+    networks:
+      - bsbackend-dev
+volumes:
+  db_volume:

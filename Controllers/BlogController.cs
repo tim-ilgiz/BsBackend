@@ -25,5 +25,15 @@ namespace bsbackend.Controllers
                 Name = c.Name
             }).ToList();
         }
+
+        [HttpPost]
+        //[ProducesResponseType(typeof(Blog), 200)]
+        //[Produces("application/json")]
+        public object Post([FromBody] Blog blog)
+        {
+            _context.Blogs.Add(blog);
+            _context.SaveChanges();
+            return Ok();
+        }
     }
 }

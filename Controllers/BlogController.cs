@@ -27,8 +27,8 @@ namespace bsbackend.Controllers
         }
 
         [HttpPost]
-        //[ProducesResponseType(typeof(Blog), 200)]
-        //[Produces("application/json")]
+        [ProducesResponseType(typeof(Blog), 200)]
+        [Produces("application/json")]
         public object Post([FromBody] Blog blog)
         {
             _context.Blogs.Add(blog);

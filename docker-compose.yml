@@ -13,7 +13,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:80"     
+      - "5222:80"     
     environment:
       DB_CONNECTION_STRING: "host=bsserver;port=5432;database=bsdb;username=bsuser;password=bspass"
     networks:

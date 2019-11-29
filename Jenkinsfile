@@ -1,16 +1,26 @@
-node {
- 
-    stage ('Checkout'){
-        git 'git@github.com:tim-ilgiz/BsBackend.git'
+pipeline {
+    agent any
+
+    options {
+        skipDefaultCheckout true
     }
-    stage ('Build'){
-        sh 'sudo docker-compose -f docker-compose.ci.build.yaml up'
-        sh 'sudo docker-compose -f docker-compose.ci.build.yaml down --remove-orphans'
-    }
-  
-    stage 'Deploy'{
-        sh 'sudo docker-compose down --remove-orphans'
-        sh 'sudo docker-compose up -d --build'
-        sh 'sudo docker ps -a | grep BsBackend'
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker-compose build'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose down --remove-orphans'
+                sh 'docker-compose up -d --build'
+            }
+        }
     }
 }
